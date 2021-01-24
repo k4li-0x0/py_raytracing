@@ -47,14 +47,4 @@ class Camera:
         Camera.rotation = rotation
 
 
-class dText(pygame.font.Font):
-    def __init__(self, screen, font, size, pos, valueType=int, value=0, onUpdate=None):
-        super().__init__(font, size)
-        self.screen = screen
-        self.pos = pos
-        self.value = valueType(value)
-        self.onUpdate = onUpdate
-
-    def draw(self):
-        text = self.render(str(self.value), True, self.pos)
 

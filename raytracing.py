@@ -17,6 +17,15 @@ def trace(screen):
 
 
 def TraceRay(O, D, t_min, t_max):
+    close_sphere, close_t = ClosestIntersection(O, D, t_min, t_max)
+    if close_sphere == None:
+        return BACKGROUND_COLOR
+    P = sumPV(O, multi(close_t, D))
+    N = subDot(P, close_sphere.center)
+    N = multi((1 / sqrt(dot(N, N))), N)
+    return multi(ComputeLighting(P, N, antiV(D), close_sphere.specular), close_sphere.color)
+
+def ClosestIntersection(O, D, t_min, t_max):
     close_t = inf
     close_sphere = None
     for obj in SCENE.objects:
@@ -28,12 +37,8 @@ def TraceRay(O, D, t_min, t_max):
             if (t_min < t2 < t_max) and t2 < close_t:
                 close_t = t2
                 close_sphere = obj
-    if close_sphere == None:
-        return BACKGROUND_COLOR
-    P = sumPV(O, multi(close_t, D))
-    N = subDot(P, close_sphere.center)
-    N = multi((1 / sqrt(dot(N, N))), N)
-    return multi(ComputeLighting(P, N, antiV(D), close_sphere.specular), close_sphere.color)
+    return close_sphere, close_t
+    
 
 def IntersectRaySphere(O, D, sphere):
     C = sphere.center
@@ -59,8 +64,15 @@ def ComputeLighting(P, N, V, s):
         else:
             if light.type == "point":
                 L = subDot(light.pos, P)
+                t_max = 1
             else:
                 L = light.dir
+                t_max = inf
+
+            shadow_sphere, shadow_t = ClosestIntersection(P, L, 0.001, t_max)
+            if shadow_sphere != None:
+                continue
+            
             n_dot_l = dot(N, L)
             if n_dot_l > 0:
                 i += light.intensity * n_dot_l / (sqrt(dot(N, N)) * sqrt(dot(L, L)))

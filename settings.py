@@ -8,7 +8,7 @@ BACKGROUND_COLOR = (0, 0, 0)
 
 SCENE = Scene(
     Sphere(
-            center=(0, 0, 20),
+            center=(0, -5, 20),
             radius=5,
             color=(255, 0, 0),
             specular=500,
@@ -18,7 +18,7 @@ SCENE = Scene(
             center=(-15, -5, 50),
             radius=15,
             color=(0, 255, 0),
-            specular=200,
+            specular=100,
             reflective=0.25
             ),
     Sphere(
@@ -32,7 +32,7 @@ SCENE = Scene(
             center=(0, -500, 150),
             radius=500,
             color=(255, 255, 0),
-            specular=-1,
+            specular=10,
             reflective=0.25
             ),
     Light(
@@ -42,8 +42,8 @@ SCENE = Scene(
     
     Light(
         typeof="point",
-        intensity=0.4,
-        pos=(0, 0, 10)
+        intensity=0.6,
+        pos=(0, 10, 0)
         ),
     Light(
         typeof="directional",

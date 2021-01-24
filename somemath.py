@@ -27,7 +27,11 @@ def sumPV(P, V):
     return (P[0] + V[0], P[1] + V[1], P[2] + V[2])
 
 def normalizeRGB(RGB):
-    return (RGB[0] % 255, RGB[1] % 255, RGB[2] % 255)
+    RGB = list(RGB)
+    for i in range(3):
+        if RGB[i] > 255:
+            RGB[i] = 255
+    return tuple(RGB)
 
 def sqrt(x):
     return x ** (1/2)
