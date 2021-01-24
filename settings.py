@@ -1,7 +1,7 @@
 from Objects import *
 
 WIDTH, HEIGHT = SIZE = 300, 300
-viewport_size = 1;
+viewport_size = 1
 Z_PROJECTION = 1
 FPS = 30
 BACKGROUND_COLOR = (0, 0, 0)
@@ -46,12 +46,17 @@ SCENE = Scene(
         pos=(0, 10, 0)
         ),
     Light(
+        typeof="point",
+        intensity=0.1,
+        pos=(-10, 5, 5)
+        ),
+    Light(
         typeof="directional",
         intensity=0.4,
         dirV=(3, 4, 4)
         )
     )
 
-camera = Camera()
+camera = Camera(center=(3, 4, 7))
 clock = None
 

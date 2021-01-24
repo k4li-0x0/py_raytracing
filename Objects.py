@@ -45,6 +45,7 @@ class Camera:
     def __init__(self, center=(0, 0, 0), rotation=(0, 0, 0)):
         Camera.center = center
         Camera.rotation = rotation
+        Camera.matrix = None
 
 
 

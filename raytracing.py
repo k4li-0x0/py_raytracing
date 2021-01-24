@@ -7,14 +7,15 @@ from Objects import *
 
 def trace(screen):
     O = camera.center
+    Camera.matrix = rotMatrix(*degToRad(Camera.rotation))
     for x in range(-WIDTH // 2, WIDTH // 2):
         for y in range(-HEIGHT // 2, HEIGHT // 2):
             D = toViewport((x, y))
+            D = rotateCam(D)
             color = TraceRay(O, D, 1, inf)
             xc, yc = coord((x, y))
             gfxdraw.pixel(screen, xc, yc, normalizeRGB(color))
             pygame.display.flip()
-
 
 def TraceRay(O, D, t_min, t_max):
     close_sphere, close_t = ClosestIntersection(O, D, t_min, t_max)
@@ -39,6 +40,8 @@ def ClosestIntersection(O, D, t_min, t_max):
                 close_sphere = obj
     return close_sphere, close_t
     
+def ReflectRay(R, N):
+    return subDot(2 * multi(dot(R, N), N), R)
 
 def IntersectRaySphere(O, D, sphere):
     C = sphere.center

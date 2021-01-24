@@ -1,4 +1,6 @@
 from settings import *
+from numpy import sin, cos, pi
+import json
 
 inf = 10 ** 15
 
@@ -26,12 +28,38 @@ def multi(t, P):
 def sumPV(P, V):
     return (P[0] + V[0], P[1] + V[1], P[2] + V[2])
 
+def rotMatrix(z, y, x):
+    return ((cos(y), sin(y) * sin(z), -sin(y) * cos(z)),
+            (sin(x) * sin(y), cos(x) * cos(z) - sin(x) * cos(y) * sin(z), cos(x) * sin(z) + sin(x) * cos(y) * cos(z)),
+            (cos(x) * sin(y), -sin(x) * cos(z) - cos(x) * cos(y) * sin(z), -sin(x) * sin(z) + cos(x) * cos(y) * cos(z))
+            )
+
+def degToRad(rot):
+    x, y, z = rot
+    x *= pi / 180
+    y *= pi / 180
+    z *= pi / 180
+    return x, y, z
+
+def rotateCam(pos):
+    rot = camera.matrix
+    res = [0] * 3
+    for i in range(3):
+        for j in range(3):
+            res[i] += pos[j] * rot[i][j]
+    return tuple(res)
+
 def normalizeRGB(RGB):
     RGB = list(RGB)
     for i in range(3):
         if RGB[i] > 255:
             RGB[i] = 255
-    return tuple(RGB)
+    return tuple(RGB)   
+
+def loadScene(path):
+    with open(path) as f:
+        data = json.load(f)
+    print(data)
 
 def sqrt(x):
     return x ** (1/2)

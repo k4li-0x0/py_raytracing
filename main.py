@@ -14,8 +14,6 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode(SIZE)
     isRunning = True
     clock = pygame.time.Clock()
-    for obj in SCENE:
-        print(obj)
     retrace()
     while isRunning:
         for event in pygame.event.get():
