@@ -1,10 +1,15 @@
 from Objects import *
+import os
 
-WIDTH, HEIGHT = SIZE = 300, 300
+WIDTH, HEIGHT = SIZE = 500, 500
 viewport_size = 1
 Z_PROJECTION = 1
 FPS = 30
 BACKGROUND_COLOR = (0, 0, 0)
+LOADING = tuple(map(pygame.image.load,
+                    map(os.path.abspath,
+                                        [f"img/load{i}.png" for i in range(1, 7)] +
+                                        [os.path.abspath("img/logo.png")])))
 
 SCENE = Scene(
     Sphere(
