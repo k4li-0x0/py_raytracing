@@ -1,30 +1,41 @@
 import pygame
+import sys
 from pygame import gfxdraw
 from settings import *
 from somemath import *
 from Objects import *
-
+from tracersystem import *
 
 def trace(screen):
     O = camera.center
     Camera.matrix = rotMatrix(*degToRad(Camera.rotation))
     for x in range(-WIDTH // 2, WIDTH // 2):
         for y in range(-HEIGHT // 2, HEIGHT // 2):
+            getEvents(screen, trace)
             D = toViewport((x, y))
             D = rotateCam(D)
-            color = TraceRay(O, D, 1, inf)
+            color = TraceRay(O, D, 1, inf, 3)
             xc, yc = coord((x, y))
             gfxdraw.pixel(screen, xc, yc, normalizeRGB(color))
             pygame.display.flip()
 
-def TraceRay(O, D, t_min, t_max):
+def TraceRay(O, D, t_min, t_max, depth):
     close_sphere, close_t = ClosestIntersection(O, D, t_min, t_max)
     if close_sphere == None:
         return BACKGROUND_COLOR
     P = sumPV(O, multi(close_t, D))
     N = subDot(P, close_sphere.center)
     N = multi((1 / sqrt(dot(N, N))), N)
-    return multi(ComputeLighting(P, N, antiV(D), close_sphere.specular), close_sphere.color)
+    local_color = multi(ComputeLighting(P, N, antiV(D), close_sphere.specular), close_sphere.color)
+
+    r = close_sphere.reflective
+    if depth <= 0 or r <= 0:
+        return local_color
+
+    R = ReflectRay(antiV(D), N)
+    reflected_color = TraceRay(P, R, 0.001, inf, depth - 1)
+
+    return normalizeRGB(sumPV(multi((1 - r), local_color), multi(r, reflected_color)))
 
 def ClosestIntersection(O, D, t_min, t_max):
     close_t = inf
