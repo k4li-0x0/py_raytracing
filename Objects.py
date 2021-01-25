@@ -1,5 +1,5 @@
 import pygame
-
+import settings
 
 class Scene:
     def __init__(self, *args):
@@ -48,4 +48,31 @@ class Camera:
         Camera.matrix = None
 
 
+class LoadingSprite(pygame.sprite.Sprite):
+    def __init__(self, group):
+        super().__init__(group)
+        self.index = 0
+        self.image = settings.LOADING[self.index]
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        self.index = (self.index + 1) % 6
+        self.image = settings.LOADING[self.index]
+
+
+class Text(pygame.sprite.Sprite):
+    def __init__(self, group, text, pos, size, color):
+        super().__init__(group)
+        self.index = 0
+        font = pygame.font.Font(None, size)
+        text = font.render(text, False, color)
+        self.image = text
+        self.rect = self.image.get_rect().move(*pos)
+
+
+class Logo(pygame.sprite.Sprite):
+    def __init__(self, group, pos):
+        super().__init__(group)
+        self.image = settings.LOADING[6]
+        self.rect = self.image.get_rect().move(*pos)
 
