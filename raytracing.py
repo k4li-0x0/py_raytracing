@@ -1,5 +1,6 @@
 import pygame
 import sys
+from PIL import Image
 from pygame import gfxdraw
 from settings import *
 from somemath import *
@@ -8,6 +9,7 @@ from tracersystem import *
 
 def trace(screen):
     O = camera.center
+    img = image.load()
     Camera.matrix = rotMatrix(*degToRad(Camera.rotation))
     for x in range(-WIDTH // 2, WIDTH // 2):
         for y in range(-HEIGHT // 2, HEIGHT // 2):
@@ -17,6 +19,7 @@ def trace(screen):
             color = TraceRay(O, D, 1, inf, 3)
             xc, yc = coord((x, y))
             gfxdraw.pixel(screen, xc, yc, normalizeRGB(color))
+            img[xc, yc] = tuple(map(int, normalizeRGB(color)))
             pygame.display.flip()
 
 def TraceRay(O, D, t_min, t_max, depth):

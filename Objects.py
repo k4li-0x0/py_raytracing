@@ -40,12 +40,18 @@ class Light:
         self.pos = pos
         self.dir = dirV
 
+    def __str__(self):
+        return f"{self.type}, {self.intensity}, {self.pos}, {self.dir}"
+
 
 class Camera:
     def __init__(self, center=(0, 0, 0), rotation=(0, 0, 0)):
         Camera.center = center
         Camera.rotation = rotation
         Camera.matrix = None
+
+    def __str__(self):
+        return f"{Camera.center}, {Camera.rotation}, {Camera.matrix}"
 
 
 class LoadingSprite(pygame.sprite.Sprite):

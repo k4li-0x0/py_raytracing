@@ -1,4 +1,5 @@
 from Objects import *
+from PIL import Image, ImageDraw
 import os
 
 WIDTH, HEIGHT = SIZE = 500, 500
@@ -8,16 +9,19 @@ FPS = 30
 BACKGROUND_COLOR = (0, 0, 0)
 LOADING = tuple(map(pygame.image.load,
                     map(os.path.abspath,
-                                        [f"img/load{i}.png" for i in range(1, 7)] +
-                                        [os.path.abspath("img/logo.png")])))
+                        [f"img/load{i}.png" for i in range(1, 7)] +
+                        [os.path.abspath("img/logo.png")])))
+image = Image.new("RGB", (WIDTH + 1, HEIGHT + 1), BACKGROUND_COLOR)
 
+
+#scene (don't count these lines)
 SCENE = Scene(
     Sphere(
             center=(0, -5, 20),
             radius=5,
             color=(255, 0, 0),
             specular=500,
-            reflective=0.25
+            reflective=0.05
             ),
     Sphere(
             center=(-15, -5, 50),
@@ -38,7 +42,7 @@ SCENE = Scene(
             radius=500,
             color=(255, 255, 0),
             specular=10,
-            reflective=0.25
+            reflective=0.5
             ),
     Light(
         typeof="ambient",
@@ -62,6 +66,6 @@ SCENE = Scene(
         )
     )
 
-camera = Camera(center=(3, 4, 7))
-clock = None
+camera = Camera()
+
 
