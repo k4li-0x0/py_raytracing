@@ -10,6 +10,9 @@ if __name__ == "__main__":
     try:
         pygame.init()
         screen = pygame.display.set_mode(SIZE)
+        logo = pygame.image.load("img/logo.ico")
+        pygame.display.set_caption("Pygame Ray Tracing")
+        pygame.display.set_icon(logo)
         load_group = pygame.sprite.Group()
         load = LoadingSprite(load_group)
         crText = Text(load_group, "Thanks for @PatientZero from Habr.com", (70, 5), 24, "white")
